@@ -139,8 +139,13 @@ class FinnClient
 			if ($entry->children($ns['media']) && $entry->children($ns['media'])->content->attributes()) {
 				//$img = $entry->children($ns['media'])->content->attributes();
 				foreach($entry->children($ns['media'])->content as $content) {
-					$img[] = current($content->attributes());
+					$imgAttributes = current($content->attributes());
+					$description = current($content->children($ns['media'])->description);
+					$img[] = array_merge( $imgAttributes, compact('description') );
 				}
+
+				$location = $entry->children($ns['finn'])->location;
+				$property->city = (string)$location->children($ns['finn'])->city;
 			}
 			$property->img = $img;
 		
